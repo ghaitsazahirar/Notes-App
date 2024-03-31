@@ -6,7 +6,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/allcss.css">
+        <link rel="stylesheet" href="allcss.css">
     
          <!-- FONT GOOGLE -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,19 +31,16 @@
                     <h2>Simplify Your Schedule</h2>
                 </div>
                 <div class="input">
-                    <label class ="Title" for="Title">Title</label>
-                    <input id="inputjudul" 
-                    name="inputjudul" 
-                    type="text" 
-                    aria-describedby="ValidationNote"
-                    required/>
-                    <p id="ValidationNote" class="ValidationNoteMassage" aria-live="polite" ></p>
-                    <label class="Description" for="Description">Description</label>
-                    <textarea id="inputdesc" name="inputdesc" placeholder="describe your notes here"></textarea>
+                    <label class="Title" for="inputjudul">Title</label>
+                    <input id="inputjudul" name="Title" type="text" aria-describedby="ValidationNote" required/>
+
+
+                    <label class="Description" for="inputdesc">Description</label>
+                    <textarea id="inputdesc" name="Description" placeholder="describe your notes here"></textarea>
            <button id="btn-submit" class="btn-submit" type="submit">Done</button>
         </div>
         </form>
     </div>
-        <script type="module" src="/script.js"></script>
+        <script type="module" src="script.js"></script>
     </body>
 </html>
