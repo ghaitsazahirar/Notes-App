@@ -105,3 +105,5 @@ const notesData = [
       archived: false,
     },
   ];
+
+  export {notesData};
