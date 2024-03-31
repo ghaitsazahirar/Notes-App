@@ -1,6 +1,5 @@
 import  './data/data.js';
 import './js-compound/search-bar.js';
-import { notesData } from './data/data.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('form');
@@ -124,8 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
-           box-sizing: border-box;
-        }
+           box-sizing: border-box;}
         </style>
       `;
 
@@ -140,14 +138,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       this.shadowRoot.appendChild(ElementNotesData);
+
+      // Add the following line to append the NoteList element to the document
+      document.body.appendChild(this.shadowRoot.firstChild);
     }
   }
 
   customElements.define('note-item', NoteItem);
   customElements.define('note-list', NoteList);
 
+  // Remove the following lines since you don't need to select the NoteList element
   const noteList = document.getElementById('note-list');
-
   if (noteList) {
     const noteListInstance = new NoteList();
     noteList.replaceWith(noteListInstance);
