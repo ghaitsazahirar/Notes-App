@@ -1,10 +1,11 @@
-import  notesData from './data/data.js';
+import  './data/data.js';
 import './js-compound/search-bar.js';
+import { notesData } from './data/data.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('form');
-  const inputTitle = form.elements.Title;
-  const inputDesc = form.elements.Description;
+  const inputTitle = form.elements.inputjudul;
+  const inputDesc = form.elements.inputdesc;
 
   form.addEventListener('submit', (event) => event.preventDefault());
 
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            box-sizing: border-box;
+           box-sizing: border-box;
         }
         </style>
       `;
