@@ -1,60 +1,99 @@
-import  './data/data.js';
+import './data/data.js';
 import './js-compound/search-bar.js';
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('form');
-  const inputTitle = form.elements.inputjudul;
-  const inputDesc = form.elements.inputdesc;
+const form = document.querySelector('form');
+let inputTitle = form.elements.inputjudul;
+let inputDesc = form.elements.inputdesc;
 
-  form.addEventListener('submit', (event) => event.preventDefault());
+form.addEventListener('submit', (event) => event.preventDefault());
 
-  const customValidationHandler = (event) => {
+const customValidationHandler = (event) => {
     event.target.setCustomValidity('');
 
     if (event.target.validity.valueMissing) {
-      event.target.setCustomValidity('Important to fill');
-      return;
+        event.target.setCustomValidity('Fill this.');
+        return;
     }
-  };
+};
 
-  inputDesc.addEventListener('invalid', customValidationHandler);
-
-  function handleValidation(event) {
+const handleValidation = (event) => {
     const isValid = event.target.validity.valid;
     const errorMessage = event.target.validationMessage;
 
     const connectedValidationId = event.target.getAttribute('aria-describedby');
-    const connectedValidationX2 = connectedValidationId
-      ? document.getElementById(connectedValidationId) : null;
+    const connectedValidationEl = connectedValidationId
+        ? document.getElementById(connectedValidationId)
+        : null;
 
-    if (connectedValidationX2) {
-      if (errorMessage && !isValid) {
-        connectedValidationX2.innerText = errorMessage;
-      }
-      else {
-        connectedValidationX2.innerText = '';
-      }
+    if (connectedValidationEl) {
+        if (errorMessage && !isValid) {
+            connectedValidationEl.innerText = errorMessage;
+        } else {
+            connectedValidationEl.innerText = '';
+        }
     }
-  }
+}
 
-  inputTitle.addEventListener('blur', handleValidation);
-  inputDesc.addEventListener('blur', handleValidation);
+inputTitle.addEventListener('change', customValidationHandler);
+inputTitle.addEventListener('invalid', customValidationHandler);
 
-  class NoteItem extends HTMLElement {
-    constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
+inputDesc.addEventListener('change', customValidationHandler);
+inputDesc.addEventListener('invalid', customValidationHandler);
+
+inputTitle.addEventListener('blur', handleValidation);
+inputDesc.addEventListener('blur', handleValidation);
+
+document.addEventListener('DOMContentLoaded', function () { 
+    const noteForm = document.getElementById('container');
+    const noteList = document.getElementById('note-list');
+
+    noteForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+  
+      const title = inputTitle.value;
+      const body = inputDesc.value;
+  
+      const noteElement = document.createElement('div');
+      noteElement.classList.add('note');
+  
+      const titleElement = document.createElement('h2');
+      titleElement.textContent = title;
+  
+      const bodyElement = document.createElement('p');
+      bodyElement.textContent = body;
+  
+      noteElement.appendChild(titleElement);
+      noteElement.appendChild(bodyElement);
+  
+      notesData.unshift({ title, body });
+      noteList.listUpdate();
+
+      document.getElementById('inputjudul').value = '';
+      document.getElementById('inputdesc').value = '';
+    });
+    customElements.define('note-item', NoteItem);
+    customElements.define('note-list', NoteList); 
+
+    if (noteList) {
+        const noteListInstance = new NoteList();
+        noteList.replaceWith(noteListInstance);
     }
+});
 
-    setNote(note) {
-      this.note = note;
-      this.render();
-    }
+    class NoteItem extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+        }
 
-    render() {
-      this.shadowRoot.innerHTML = `
-        <style>
-          .note-item {
+        setNote(note) {
+            this.note = note;
+            this.render();
+        }
+
+        render() {
+            this.shadowRoot.innerHTML = `
+        <style>.note-item {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 10px;
@@ -72,85 +111,62 @@ document.addEventListener('DOMContentLoaded', function () {
           <p>${this.note.body}</p>
         </div>
       `;
-    }
-  }
-
-  class NoteList extends HTMLElement {
-    constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
+        }
     }
 
-    connectedCallback() {
-      this.listUpdate();
-    }
+    class NoteList extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+        }
 
-    listUpdate() {
-      this.shadowRoot.innerHTML = `
+        connectedCallback() {
+            this.listUpdate();
+        }
+
+        listUpdate() {
+            this.shadowRoot.innerHTML = `
         <style>
           .note-list {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            max-height: 80%;
-            overflow-y: auto;
-            width: 70%;
-            max-width: 400px;
-            background-color: #fefefe;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .popup-content {
+            display: grid;
+            font-size: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 40px 60px;
+            justify-items: center;
             padding: 20px;
-            position: relative;
+            border-radius: 20px;
+            box-shadow: 0px 6px 10px rgba(0,0,0,0.1);
+            
         }
-        
-        .input-container {
-            margin-bottom: 15px;
-        }
-        
-        .input-container label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        .input-container input,
-        .input-container textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-           box-sizing: border-box;}
+
         </style>
-      `;
+            `;
 
-      const ElementNotesData = document.createElement('div');
-      ElementNotesData.classList.add('note-list');
+            const ElementNotesData = document.createElement('div');
+            ElementNotesData.classList.add('note-list');
 
-      notesData.forEach(note => {
-        const ElementNote = document.createElement('note-item');
-        ElementNote.setNote(note);
+            notesData.forEach(note => {
+                const ElementNote = document.createElement('note-item');
+                ElementNote.setNote(note);
 
-        ElementNotesData.appendChild(ElementNote);
-      });
+                const elementNote = document.createElement('div');
+                elementNote.classList.add('note');
 
-      this.shadowRoot.appendChild(ElementNotesData);
+                const titleElement = document.createElement('h2');
+                titleElement.textContent = note.inputTitle;
 
-      // Add the following line to append the NoteList element to the document
-      document.body.appendChild(this.shadowRoot.firstChild);
+                const bodyElement = document.createElement('p');
+                bodyElement.textContent = note.inputDesc;
+
+                elementNote.appendChild(titleElement);
+                elementNote.appendChild(bodyElement);
+
+                ElementNotesData.appendChild(ElementNote);
+            });
+
+            this.shadowRoot.appendChild(ElementNotesData);
+
+            // Add the following line to append the NoteList element to the document
+            document.body.appendChild(this.shadowRoot.firstChild);
+        }
     }
-  }
-
-  customElements.define('note-item', NoteItem);
-  customElements.define('note-list', NoteList);
-
-  // Remove the following lines since you don't need to select the NoteList element
-  const noteList = document.getElementById('note-list');
-  if (noteList) {
-    const noteListInstance = new NoteList();
-    noteList.replaceWith(noteListInstance);
-  }
-});
