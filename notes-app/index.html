@@ -6,7 +6,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="allcss.css">
+        <link rel="stylesheet" href="./allcss.css">
     
          <!-- FONT GOOGLE -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,21 +23,21 @@
             <div class="headbar"> 
             <h2>Note List</h2>
             <search-bar></search-bar>
-            <note-list id="note-list"></note-list>
+            <note-list id="note-list" class = "note-list"></note-list>
             </div>
         </main>
-        <form class="container">
+        <form class="container" id="container">
                 <div class="title-input">
                     <h2>Simplify Your Schedule</h2>
                 </div>
                 <div class="input">
                     <label class="Title" for="inputjudul">Title</label>
-                    <input id="inputjudul" name="Title" type="text" aria-describedby="ValidationNote" required/>
+                    <input id="inputjudul" class = "inputjudul"name="Title" type="text" aria-describedby="ValidationNote" required/>
 
 
                     <label class="Description" for="inputdesc">Description</label>
-                    <textarea id="inputdesc" name="Description" placeholder="describe your notes here"></textarea>
-           <button id="btn-submit" class="btn-submit" type="submit">Done</button>
+                    <textarea id="inputdesc"class = "inputdesc" name="Description" placeholder="describe your notes here"></textarea>
+           <button id="submit" class="submit" type="submit">Done</button>
         </div>
         </form>
     </div>
