@@ -89,10 +89,42 @@ document.addEventListener('DOMContentLoaded', function () {
       this.shadowRoot.innerHTML = `
         <style>
           .note-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-          }
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 80%;
+            overflow-y: auto;
+            width: 70%;
+            max-width: 400px;
+            background-color: #fefefe;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .popup-content {
+            padding: 20px;
+            position: relative;
+        }
+        
+        .input-container {
+            margin-bottom: 15px;
+        }
+        
+        .input-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .input-container input,
+        .input-container textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
         </style>
       `;
 
